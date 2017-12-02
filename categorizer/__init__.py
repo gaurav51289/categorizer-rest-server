@@ -5,6 +5,9 @@ import string
 import nltk
 import json
 import numpy as np
+import pickle
+
+
 
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -12,6 +15,9 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from html.entities import name2codepoint
 from bs4 import BeautifulSoup
 from keras.models import load_model
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+
 
 cwd = os.getcwd()
 
@@ -71,8 +77,10 @@ def cleanText(text):
 
     return " ".join(new_tokens)
 
-
+""""
 def getCategories(question):
+    
+
     userInput = cleanText(question)
     inputTok = userInput.split()[:160]
     inputTok = [bag[t] if t in bag else 0 for t in inputTok]
@@ -98,3 +106,36 @@ def getCategories(question):
         if cat_dict[cat] == 1.0:
             que_cats.append(cat)
     return que_cats
+
+
+"""
+def getCategories(question):
+    test_question = [question]
+    sequences = []
+
+    with open('tokernizer.pkl', 'rb') as input:
+        tokenizer = pickle.load(input)
+        sequences = tokenizer.texts_to_sequences(test_question)
+
+    MAX_SEQUENCE_LENGTH = 200
+    MAX_NB_WORDS = 20000
+    EMBEDDING_DIM = 100
+    VALIDATION_SPLIT = 0.3
+
+
+    data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
+
+    model  = load_model("categorize_model_with_embedding.h5")
+
+
+    pred = model.predict(data)
+    categories_list = getCategoriesFromCSV(categories_csv_path)
+
+    cat_dict = dict(zip(categories_list, pred[0]))
+    print(cat_dict)
+    que_cats = []
+    for cat in cat_dict:
+        #if cat_dict[cat] == 1.0:
+        que_cats.append(cat)
+    return que_cats
+
