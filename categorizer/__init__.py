@@ -113,7 +113,7 @@ def getCategories(question):
     test_question = [question]
     sequences = []
 
-    with open('tokernizer.pkl', 'rb') as input:
+    with open('tokenizer.pkl', 'rb') as input:
         tokenizer = pickle.load(input)
         sequences = tokenizer.texts_to_sequences(test_question)
 
