@@ -9,7 +9,7 @@ h5py==2.7.1
 html5lib==0.9999999
 itsdangerous==0.24
 Jinja2==2.10
-Keras==2.1.1
+Keras==2.0.2
 Markdown==2.6.9
 MarkupSafe==1.0
 nltk==3.2.5
@@ -18,6 +18,6 @@ protobuf==3.4.0
 PyYAML==3.12
 scipy==1.0.0
 six==1.11.0
-tensorflow==1.4.0
+tensorflow==0.12
 tensorflow-tensorboard==0.4.0rc2
 Werkzeug==0.12.2
