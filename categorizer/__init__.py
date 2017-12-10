@@ -6,7 +6,7 @@ import nltk
 import json
 import numpy as np
 import pickle
-
+import operator
 
 
 from nltk.tokenize import word_tokenize
@@ -31,12 +31,12 @@ wordnet = WordNetLemmatizer()
 f = open(bow_path, 'r')
 bag = json.loads(f.read())
 
-with open(categories_csv_path, 'tr') as f:
+with open(categories_csv_path, 'r') as f:
     reader = csv.reader(f)
     categories_list = list(reader)
 
 def getCategoriesFromCSV(path):
-    with open(path, 'tr') as f:
+    with open(path, 'r') as f:
         reader = csv.reader(f)
         return list(reader)[0]
 
@@ -134,8 +134,12 @@ def getCategories(question):
     cat_dict = dict(zip(categories_list, pred[0]))
     print(cat_dict)
     que_cats = []
-    for cat in cat_dict:
-        #if cat_dict[cat] == 1.0:
-        que_cats.append(cat)
+    sorted_cat=sorted(cat_dict.items(), key=operator.itemgetter(1), reverse=True)
+
+    que_cats=[k[0] for k in sorted_cat[:5]]
+    print (que_cats)
+    #for cat in cat_dict:
+     #   if cat_dict[cat] >= 0.02 :
+     #       que_cats.append(cat)
     return que_cats
 
