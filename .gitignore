@@ -8,7 +8,7 @@ __pycache__/
 *.lock
 # C extensions
 *.so
-
+/app/magpie_model
 # Distribution / packaging
 .Python
 build/
